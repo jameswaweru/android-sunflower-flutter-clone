@@ -1,2 +1,2 @@
 # android-sunflower-flutter-clone
-A clone of android sunflower app built in clone
+A clone of android sunflower app built in kotlin
