@@ -1,17 +1,14 @@
-import 'package:android_sunflower/constants/colors.dart';
-import 'package:android_sunflower/constants/constants.dart';
-import 'package:android_sunflower/pages/gallery_page.dart';
-import 'package:android_sunflower/pages/plant_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:android_sunflower/pages/plant_details.dart';
 
-class PlantCard extends StatefulWidget {
+class PlantListCard extends StatefulWidget {
   @override
-  _PlantCardState createState() => _PlantCardState();
+  _PlantListCardState createState() => _PlantListCardState();
 }
-//replaced by plant_list_card
-class _PlantCardState extends State<PlantCard> {
+
+class _PlantListCardState extends State<PlantListCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -27,10 +24,10 @@ class _PlantCardState extends State<PlantCard> {
         elevation: 5,
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            bottomLeft: Radius.circular(20)
-          )
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20)
+            )
         ),
         child: InkWell(
           child: Column(

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GardenPlant extends StatelessWidget {
+  //also replaced
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;

@@ -16,12 +16,15 @@ class _MyGardenTabState extends State<MyGardenTab> {
   int selectedCard = -1;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: ListView.builder(
-        itemCount: widget.plantedPlants.length,
-          itemBuilder: (context , index)=>
-              GardenPlant()
+
+    //working copy
+    return Container(
+      child: Column(
+        children: [
+          Expanded(child: Column(
+            children: widget.plantedPlants.map((e) => GardenPlant()).toList(),
+          ))
+        ],
       ),
     );
   }

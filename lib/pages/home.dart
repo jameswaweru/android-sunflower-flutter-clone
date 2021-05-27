@@ -66,6 +66,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
            headerSliverBuilder: (context , value){
              return [
                SliverAppBar(
+                 floating: true,
+                 snap: false,
                  // title: FadeOnScroll(
                  //   scrollController: scrollController,
                  //   fullOpacityOffset: 180,
@@ -74,7 +76,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                  // centerTitle: true,
 
                  actions: [
-
                    selectedTabIndex == 0 ? Text("") :
                    Icon(
                      Icons.filter_list,
@@ -86,36 +87,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                  centerTitle: true,
                  collapseMode: CollapseMode.pin,
                )
-                 // bottom: TabBar(
-                 //   controller: _tabController,
-                 //   indicatorColor: Colors.yellow,
-                 //   unselectedLabelColor: Color(0xFF555555),
-                 //   labelColor: Colors.black,
-                 //   onTap: (index){
-                 //     setState(() {
-                 //       selectedTabIndex = index;
-                 //     });
-                 //   },
-                 //   tabs: [
-                 //     Tab(
-                 //       icon: Icon(
-                 //         Icons.directions_bike,
-                 //         color: selectedTabIndex == 0 ? Colors.yellow : Colors.black,
-                 //         size: 20,
-                 //       ),
-                 //       text: 'MY GARDEN',
-                 //     ),
-                 //     Tab(
-                 //       icon: Icon(
-                 //         Icons.directions_transit,
-                 //         color: selectedTabIndex == 1 ? Colors.yellow : Colors.black,
-                 //         size: 20,
-                 //       ),
-                 //       text: 'PLANT LIST',
-                 //
-                 //     )
-                 //   ],
-                 // ),
                ),
              // SliverPadding(
              //   padding: const EdgeInsets.all(8.0),

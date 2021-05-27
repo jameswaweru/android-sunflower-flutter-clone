@@ -34,18 +34,6 @@ class _GalleryPageState extends State<GalleryPage> {
           crossAxisSpacing: 10,
         ),
       ),
-      // body: GridView.builder(
-      //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      //       crossAxisCount: 3,
-      //       mainAxisSpacing: 8,
-      //       crossAxisSpacing: 8
-      //     ),
-      //     itemCount: 4,
-      //     itemBuilder: (context , index)=>Image(
-      //         image: NetworkImage("https://cdn-prod.medicalnewstoday.com/content/images/articles/276/276714/red-and-white-onions.jpg"),
-      //         color: Colors.white,
-      //     )
-      // ),
     );
   }
 }
