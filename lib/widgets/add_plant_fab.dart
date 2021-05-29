@@ -1,6 +1,7 @@
 import 'package:android_sunflower/models/Planted.dart';
 import 'package:android_sunflower/models/plant.dart';
 import 'package:android_sunflower/pages/home_two.dart';
+import 'package:android_sunflower/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -13,8 +14,15 @@ class AddPlantFab extends StatefulWidget {
   final ScrollController scrollController;
   Plant plant;
   bool? isPlantAdded ;
+  BuildContext? buildContext;
 
-  AddPlantFab({required this.defaultTopMargin , required this.scaleStart, required this.scrollController, required this.plant , required this.isPlantAdded});
+  AddPlantFab({
+    required this.defaultTopMargin ,
+    required this.scaleStart,
+    required this.scrollController,
+    required this.plant ,
+    required this.isPlantAdded
+  });
 
 
   @override
@@ -58,6 +66,8 @@ class _AddPlantFabState extends State<AddPlantFab> {
 
       print("retrieved plants is not null..."+jsonEncode(plantedPlants));
     }
+
+
 
   }
 
@@ -121,6 +131,7 @@ class _AddPlantFabState extends State<AddPlantFab> {
           onPressed: () => {
             // addPlantIntoStorage(widget.plant)
             storingPlants(widget.plant)
+
           },
           child: new Icon(Icons.add , color: Colors.black,),
         ),

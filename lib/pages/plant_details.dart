@@ -154,20 +154,20 @@ class _PlantDetailsState extends State<PlantDetails> {
                               Text("every "+widget.plant.wateringInterval.toString()+" days" , style: TextStyle(fontSize: 14, color: Colors.grey[400]),)
                             ],
                           ),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 20,),
-                            // Text("Roses are red" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                            // Text("Voilet are blue" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                            // Text("Sunflowers have seeds" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                            // Text("That folks" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                            // SizedBox(height: 20,),
-                            // Text("That folks" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                            // SizedBox(height: 20,),
-                            Text(widget.plant.description ,
-                              style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                              ],
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 20,),
+                              // Text("Roses are red" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                              // Text("Voilet are blue" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                              // Text("Sunflowers have seeds" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                              // Text("That folks" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                              // SizedBox(height: 20,),
+                              // Text("That folks" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                              // SizedBox(height: 20,),
+                              Text(widget.plant.description ,
+                                style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                            ],
                           ),
                         ],
                       )
@@ -178,7 +178,7 @@ class _PlantDetailsState extends State<PlantDetails> {
           ),
           // isPlantAdded == true ? AddPlantFab(defaultTopMargin: 200-4, scaleStart: 96, scrollController: _scrollController , plant: widget.plant ,  )
           //     : Container(),
-          AddPlantFab(defaultTopMargin: 200-4, scaleStart: 96, scrollController: _scrollController , plant: widget.plant , isPlantAdded: widget.isPlantAdded, )
+          AddPlantFab(defaultTopMargin: 200-4, scaleStart: 96, scrollController: _scrollController , plant: widget.plant , isPlantAdded: widget.isPlantAdded)
 
         ],
       ),

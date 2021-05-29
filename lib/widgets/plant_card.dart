@@ -46,6 +46,12 @@ class _PlantCardState extends State<PlantCard> {
         }
       }
       print("plant is added results:"+isPlantAdded.toString());
+      Navigator.push(
+          context,
+          PageTransition(
+              duration: Duration(milliseconds: 700),
+              type: PageTransitionType.fade,
+              child: PlantDetails(selectedPlant, this.isPlantAdded)));
     });
   }
 
@@ -58,12 +64,6 @@ class _PlantCardState extends State<PlantCard> {
     return InkWell(
       onTap: (){
         checkIFPlantIsAdded(widget.plant);
-        Navigator.push(
-            context,
-            PageTransition(
-                duration: Duration(milliseconds: 700),
-                type: PageTransitionType.fade,
-                child: PlantDetails(widget.plant , this.isPlantAdded)));
       },
       child: Container(
         clipBehavior: Clip.antiAlias,
