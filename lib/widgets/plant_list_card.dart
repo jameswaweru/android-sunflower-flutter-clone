@@ -1,9 +1,14 @@
+import 'package:android_sunflower/models/plant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:android_sunflower/pages/plant_details.dart';
 
 class PlantListCard extends StatefulWidget {
+
+  Plant plant;
+  PlantListCard(this.plant);
+
   @override
   _PlantListCardState createState() => _PlantListCardState();
 }
@@ -18,7 +23,7 @@ class _PlantListCardState extends State<PlantListCard> {
             PageTransition(
                 duration: Duration(milliseconds: 700),
                 type: PageTransitionType.fade,
-                child: PlantDetails()));
+                child: PlantDetails(widget.plant , true)));
       },
       child: Card(
         elevation: 5,

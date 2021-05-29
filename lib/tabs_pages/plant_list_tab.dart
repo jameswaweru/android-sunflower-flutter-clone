@@ -1,4 +1,3 @@
-import 'package:android_sunflower/widgets/plant_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,12 +15,7 @@ class _PlantListTabState extends State<PlantListTab> {
         mainAxisSpacing: 10, 
         padding: EdgeInsets.all(25),
           children: [
-            PlantCard(),
-            PlantCard(),
-            PlantCard(),
-            PlantCard(),
-            PlantCard(),
-            PlantCard()
+
           ],
     );
   }

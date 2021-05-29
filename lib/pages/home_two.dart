@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:android_sunflower/constants/colors.dart';
+import 'package:android_sunflower/constants/constants.dart';
+import 'package:android_sunflower/models/plant.dart';
 import 'package:android_sunflower/pages/gallery_page.dart';
 import 'package:android_sunflower/tabs_pages/my_garden_tab.dart';
 import 'package:android_sunflower/tabs_pages/plant_list_tab.dart';
@@ -9,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:android_sunflower/widgets/gallery_container.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class HomePageTwo extends StatefulWidget  {
   @override
@@ -23,22 +29,37 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
   final ScrollController listViewScrollController = ScrollController();
   late TabController _tabController;
   int selectedTabIndex = 0;
+  //List<Plant> plants = new
+
+  Future<List<Plant>> _getPlants() async {
+    return plants;
+  }
 
 
-  List<String> plantedPlants = [
-    "https://cdn-prod.medicalnewstoday.com/content/images/articles/276/276714/red-and-white-onions.jpg",
-    "https://cdn-prod.medicalnewstoday.com/content/images/articles/276/276714/red-and-white-onions.jpg",
-    "https://cdn-prod.medicalnewstoday.com/content/images/articles/276/276714/red-and-white-onions.jpg",
-    "https://cdn-prod.medicalnewstoday.com/content/images/articles/276/276714/red-and-white-onions.jpg",
-    "https://cdn-prod.medicalnewstoday.com/content/images/articles/276/276714/red-and-white-onions.jpg",
-    "https://cdn-prod.medicalnewstoday.com/content/images/articles/276/276714/red-and-white-onions.jpg",
-    "https://cdn-prod.medicalnewstoday.com/content/images/articles/276/276714/red-and-white-onions.jpg",
-    "https://cdn-prod.medicalnewstoday.com/content/images/articles/276/276714/red-and-white-onions.jpg"
-  ];
-  // List tabsScreens = [
-  //   MyGardenTab(plantedPlants: plantedPlants),
-  //   PlantListTab()
-  // ];
+  SharedPreferences? preferences;
+  List<Plant> plantedPlants = [];
+  String? plantedPlantsString ;
+  DateTime? timeNow;
+  bool? isPlantAdded ;
+  Plant? selectedPlant;
+
+  Future<void> initializePreference() async{
+    this.preferences = await SharedPreferences.getInstance();
+  }
+
+  Future<void> retrieveSavedPlants() async{
+    plantedPlantsString = this.preferences?.getString("plantedPlantsJsonString");
+    var plantsObjsJson = jsonDecode(plantedPlantsString!)as List;
+    plantedPlants= plantsObjsJson.map((plantJson) => Plant.fromJson(plantJson)).toList();
+  }
+
+  Future<List<Plant>> _getPlantedPlants() async {
+    this.retrieveSavedPlants().whenComplete((){
+      return plantedPlants;
+    });
+    return plantedPlants;
+  }
+
   // List of Tabs
   final List<Tab> myTabs = <Tab>[
     Tab(text: 'tab at 0 index'),
@@ -49,6 +70,10 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
+
+    plantedPlantsString = "";
+
+
     _tabController = new TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {
@@ -99,6 +124,9 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
         );
       }
     });
+
+    initializePreference();
+    //retrieveSavedPlants();
   }
 
   @override
@@ -111,6 +139,12 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+
+    // this.initializePreference().whenComplete((){
+    //   print("pref has been initialized...");
+    //   this.retrieveSavedPlants();
+    // });
+
     return Scaffold(
       body: DefaultTabController(
         length: 2,
@@ -168,59 +202,90 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  Container(
-                    child: plantedPlants.length > 0 ? StaggeredGridView.countBuilder(
-                      controller: staggeredListScrollController,
-                      scrollDirection: Axis.vertical,
-                        physics: ScrollPhysics(),
-                        crossAxisCount: 4,
-                        itemCount: 7,
-                        shrinkWrap: true,
-                        itemBuilder: (context , index) => PlantedPlantDetailsCard(index),
-                        staggeredTileBuilder: (int index) =>
-                        new StaggeredTile.fit(2),
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                    ) : Column(mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Your Garden is empty",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 28,
-                              color: Colors.black
-                          ),
-                        ),
 
-                        InkWell(
-                          onTap: (){
-                            setState(() {
-                              selectedTabIndex = 1;
-                              _tabController.animateTo(1);
-                            });
+                  FutureBuilder(
+                      future: _getPlantedPlants(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot){
+                        if(snapshot.data == null || plantedPlants.length < 1){
+                          return Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Your Garden is empty",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 28,
+                                        color: Colors.black
+                                    ),
+                                  ),
 
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(13.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20)
-                              ),
-                              color: Colors.yellow,),
-                            child: Text("ADD PLANT" , style: TextStyle(color: sunflower_green_500 , letterSpacing: 2, fontWeight: FontWeight.bold),),
-                          ),
-                        )
-                      ],
-                    ),
+                                  InkWell(
+                                    onTap: (){
+                                      setState(() {
+                                        selectedTabIndex = 1;
+                                        _tabController.animateTo(1);
+                                      });
+
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(13.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(20),
+                                            bottomLeft: Radius.circular(20)
+                                        ),
+                                        color: Colors.yellow,),
+                                      child: Text("ADD PLANT" , style: TextStyle(color: sunflower_green_500 , letterSpacing: 2, fontWeight: FontWeight.bold),),
+                                    ),
+                                  )
+                                ],
+                              )
+                          );
+                        }else{
+                          return StaggeredGridView.countBuilder(
+                            controller: staggeredListScrollController,
+                            scrollDirection: Axis.vertical,
+                            physics: ScrollPhysics(),
+                            crossAxisCount: 4,
+                            itemCount: plantedPlants.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context , index) => PlantedPlantDetailsCard(index , plantedPlants[index]),
+                            staggeredTileBuilder: (int index) =>
+                            new StaggeredTile.fit(2),
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                          );
+                        }
+                      }
                   ),
-                  GridView.count(
-                    controller: listViewScrollController,
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    padding: EdgeInsets.all(25),
-                    children: plantedPlants.map((e) => PlantCard()).toList(),
+
+
+                  FutureBuilder(
+                      future: _getPlants(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot){
+                        if(snapshot.data == null){
+                          return Container(
+                              child: Center(
+                                  child: Text("Loading...")
+                              )
+                          );
+                        }else{
+                          return GridView.builder(
+                              controller: listViewScrollController,
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                              ),
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (BuildContext context, int index){
+                                return PlantCard(snapshot.data[index]);
+                              }
+                          );
+                        }
+                      }
                   )
+
                 ],
 
             )

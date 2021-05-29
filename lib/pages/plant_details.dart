@@ -1,32 +1,39 @@
-import 'package:android_sunflower/constants/colors.dart';
+import 'dart:convert';
+
+import 'package:android_sunflower/models/plant.dart';
 import 'package:android_sunflower/pages/gallery_page.dart';
-import 'package:android_sunflower/pages/home_two.dart';
-import 'package:android_sunflower/tabs_pages/my_garden_tab.dart';
-import 'package:android_sunflower/tabs_pages/plant_list_tab.dart';
-import 'package:android_sunflower/widgets/GetToolBarText.dart';
 import 'package:android_sunflower/widgets/add_plant_fab.dart';
-import 'package:android_sunflower/widgets/plant_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PlantDetails extends StatefulWidget {
+
+  Plant plant;
+  bool? isPlantAdded ;
+
+  PlantDetails(this.plant , this.isPlantAdded);
+
+
   @override
   _PlantDetailsState createState() => _PlantDetailsState();
 }
 
 class _PlantDetailsState extends State<PlantDetails> {
 
-  // final ScrollController scrollController = ScrollController();
   var top = 0.0;
-
   late ScrollController _scrollController;
+  SharedPreferences? preferences;
+
 
   @override
   void initState() {
     super.initState();
     _scrollController = new ScrollController();
     _scrollController.addListener(() => setState(() {}));
+    this.initializePreference().whenComplete((){
+    });
   }
 
   @override
@@ -35,8 +42,14 @@ class _PlantDetailsState extends State<PlantDetails> {
     super.dispose();
   }
 
+  Future<void> initializePreference() async{
+    this.preferences = await SharedPreferences.getInstance();
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -54,10 +67,10 @@ class _PlantDetailsState extends State<PlantDetails> {
                       top = constraints.biggest.height;
                       return FlexibleSpaceBar(
                         background: Image.network(
-                          'https://cdn-prod.medicalnewstoday.com/content/images/articles/276/276714/red-and-white-onions.jpg',
+                          widget.plant.imageUrl,
                           fit: BoxFit.cover,
                         ),
-                        title: top < 85 ? Text("Plant Name" , style: TextStyle(color: Colors.black),) : Text(""),
+                        title: top < 85 ? Text(widget.plant.name , style: TextStyle(color: Colors.black),) : Text(""),
                         centerTitle: true,
                       );
 
@@ -74,11 +87,7 @@ class _PlantDetailsState extends State<PlantDetails> {
                         icon: const Icon(Icons.arrow_back),
                         color: Colors.black,
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePageTwo()),
-                                (Route<dynamic> route) => false,
-                          );
+                          Navigator.of(context).pop();
                         },
                       )
                   ),
@@ -113,7 +122,7 @@ class _PlantDetailsState extends State<PlantDetails> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Sunflower" , style: TextStyle(fontSize: 20, color: Colors.black),),
+                              Text(widget.plant.name , style: TextStyle(fontSize: 20, color: Colors.black),),
                               SizedBox(height: 15,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,24 +151,24 @@ class _PlantDetailsState extends State<PlantDetails> {
                                 ],
                               ),
 
-                              Text("every 3 days" , style: TextStyle(fontSize: 14, color: Colors.grey[300]),)
+                              Text("every "+widget.plant.wateringInterval.toString()+" days" , style: TextStyle(fontSize: 14, color: Colors.grey[400]),)
                             ],
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 20,),
-                              Text("Roses are red" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                              Text("Voilet are blue" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                              Text("Sunflowers have seeds" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                              Text("That folks" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                              SizedBox(height: 20,),
-                              Text("That folks" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                              SizedBox(height: 20,),
-                              Text("Hi! Question. Why does it fully expand to 224 when you've set expandedHeight to 200? And is there any way to get that 224 max number without it changing when you scroll? Right now I'm using it to map the appbar height from 0.0 to 1.0 for a smooth opacity transition throughout (although there's probably an easier way to do it than I am trying)" ,
-                                style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
-                            ],
-                          )
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 20,),
+                            // Text("Roses are red" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                            // Text("Voilet are blue" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                            // Text("Sunflowers have seeds" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                            // Text("That folks" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                            // SizedBox(height: 20,),
+                            // Text("That folks" , style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                            // SizedBox(height: 20,),
+                            Text(widget.plant.description ,
+                              style: TextStyle(fontSize: 15, color: Colors.grey[600]),),
+                              ],
+                          ),
                         ],
                       )
                   ),
@@ -167,7 +176,10 @@ class _PlantDetailsState extends State<PlantDetails> {
               )
             ],
           ),
-          AddPlantFab(defaultTopMargin: 200-4, scaleStart: 96, scrollController: _scrollController)
+          // isPlantAdded == true ? AddPlantFab(defaultTopMargin: 200-4, scaleStart: 96, scrollController: _scrollController , plant: widget.plant ,  )
+          //     : Container(),
+          AddPlantFab(defaultTopMargin: 200-4, scaleStart: 96, scrollController: _scrollController , plant: widget.plant , isPlantAdded: widget.isPlantAdded, )
+
         ],
       ),
 
