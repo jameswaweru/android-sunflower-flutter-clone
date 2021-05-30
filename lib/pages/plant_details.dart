@@ -6,6 +6,7 @@ import 'package:android_sunflower/widgets/add_plant_fab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PlantDetails extends StatefulWidget {
@@ -104,7 +105,7 @@ class _PlantDetailsState extends State<PlantDetails> {
                           icon: const Icon(Icons.share),
                           color: Colors.black,
                           onPressed: () {
-
+                            Share.share("Checkout out the "+widget.plant.name+" plant in the Android Sunflower app", subject: "Share?");
                           },
                         )
                     ),
@@ -145,7 +146,7 @@ class _PlantDetailsState extends State<PlantDetails> {
                                           PageTransition(
                                               duration: Duration(milliseconds: 700),
                                               type: PageTransitionType.fade,
-                                              child: GalleryPage()));
+                                              child: GalleryPage(widget.plant.name)));
                                     },
                                   )
                                 ],

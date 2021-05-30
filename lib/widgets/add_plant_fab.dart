@@ -67,7 +67,7 @@ class _AddPlantFabState extends State<AddPlantFab> {
       print("retrieved plants is not null..."+jsonEncode(plantedPlants));
     }
 
-
+    Navigator.of(context).pop();
 
   }
 

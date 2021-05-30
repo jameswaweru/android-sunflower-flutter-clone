@@ -47,16 +47,21 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
     this.preferences = await SharedPreferences.getInstance();
   }
 
-  Future<void> retrieveSavedPlants() async{
-    plantedPlantsString = this.preferences?.getString("plantedPlantsJsonString");
-    var plantsObjsJson = jsonDecode(plantedPlantsString!)as List;
-    plantedPlants= plantsObjsJson.map((plantJson) => Plant.fromJson(plantJson)).toList();
-  }
+  // Future<void> retrieveSavedPlants() async{
+  //   plantedPlantsString = this.preferences?.getString("plantedPlantsJsonString");
+  //   var plantsObjsJson = jsonDecode(plantedPlantsString!)as List;
+  //   plantedPlants= plantsObjsJson.map((plantJson) => Plant.fromJson(plantJson)).toList();
+  // }
 
   Future<List<Plant>> _getPlantedPlants() async {
-    this.retrieveSavedPlants().whenComplete((){
-      return plantedPlants;
+
+    plantedPlantsString = this.preferences?.getString("plantedPlantsJsonString");
+    var plantsObjsJson = jsonDecode(plantedPlantsString!)as List;
+
+    setState(() {
+      plantedPlants= plantsObjsJson.map((plantJson) => Plant.fromJson(plantJson)).toList();
     });
+
     return plantedPlants;
   }
 
@@ -71,6 +76,7 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
   void initState() {
     super.initState();
 
+    initializePreference();
     plantedPlantsString = "";
 
 
@@ -125,7 +131,7 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
       }
     });
 
-    initializePreference();
+
     //retrieveSavedPlants();
   }
 
@@ -206,7 +212,7 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
                   FutureBuilder(
                       future: _getPlantedPlants(),
                       builder: (BuildContext context, AsyncSnapshot snapshot){
-                        if(snapshot.data == null || plantedPlants.length < 1){
+                        if(snapshot.data == null){
                           return Container(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -242,6 +248,7 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
                               )
                           );
                         }else{
+
                           return StaggeredGridView.countBuilder(
                             controller: staggeredListScrollController,
                             scrollDirection: Axis.vertical,
@@ -249,7 +256,7 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
                             crossAxisCount: 4,
                             itemCount: plantedPlants.length,
                             shrinkWrap: true,
-                            itemBuilder: (context , index) => PlantedPlantDetailsCard(index , plantedPlants[index]),
+                            itemBuilder: (context , index) => PlantedPlantDetailsCard(index , snapshot.data[index]),
                             staggeredTileBuilder: (int index) =>
                             new StaggeredTile.fit(2),
                             mainAxisSpacing: 10,
