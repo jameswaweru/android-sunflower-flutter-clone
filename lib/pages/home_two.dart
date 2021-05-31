@@ -35,7 +35,6 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
     return plants;
   }
 
-
   SharedPreferences? preferences;
   List<Plant> plantedPlants = [];
   String? plantedPlantsString ;
@@ -47,11 +46,6 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
     this.preferences = await SharedPreferences.getInstance();
   }
 
-  // Future<void> retrieveSavedPlants() async{
-  //   plantedPlantsString = this.preferences?.getString("plantedPlantsJsonString");
-  //   var plantsObjsJson = jsonDecode(plantedPlantsString!)as List;
-  //   plantedPlants= plantsObjsJson.map((plantJson) => Plant.fromJson(plantJson)).toList();
-  // }
 
   Future<List<Plant>> _getPlantedPlants() async {
 
