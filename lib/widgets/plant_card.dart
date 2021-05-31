@@ -73,32 +73,6 @@ class _PlantCardState extends State<PlantCard> {
 
 
 
-  //  checkIFPlantIsAdded(Plant selectedPlant) {
-  //   this.initializePreference().whenComplete((){
-  //     //print("pref has been initialized, now checking if plant has been added");
-  //     plantedPlantsString = this.preferences?.getString("plantedPlantsJsonString");
-  //     var plantsObjsJson =  jsonDecode(plantedPlantsString)as List;
-  //     plantedPlants= plantsObjsJson.map((plantJson) => Plant.fromJson(plantJson)).toList();
-  //
-  //     if(plantedPlants.length > 0){
-  //       for(var i=0;i<plantedPlants.length;i++){
-  //         if(plantedPlants[i].plantId == selectedPlant.plantId){
-  //           isPlantAdded = true;
-  //         }
-  //       }
-  //     }
-  //
-  //     print("plant is added results:"+isPlantAdded.toString());
-  //     Navigator.push(
-  //         context,
-  //         PageTransition(
-  //             duration: Duration(milliseconds: 700),
-  //             type: PageTransitionType.fade,
-  //             child: PlantDetails(selectedPlant, this.isPlantAdded)));
-  //   });
-  // }
-
-
 
   @override
   Widget build(BuildContext context) {
